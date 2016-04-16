@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>MDDS Web Application</title>
-		<link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 	
@@ -27,11 +27,11 @@
 		</div>
 		
 		<!-- settings panel -->
-		<div id="settings-panel" class="panel" style="display:none;">
+		<div id="settings-panel" class="panel hidden">
 			
 			<h1>Settings</h1>
 			<p>TODO</p>
-			
+
 			<h1>Usage</h1>
 			<p>To exit the application and return to the settings, click anywhere on the screen or press the Escape key.</p>
 
@@ -40,14 +40,15 @@
 		</div>
 		
 		<!-- app panel -->
-		<div id="app-panel" style="display:none;">
+		<div id="app-panel" class="hidden">
 			
 			<canvas id="app-canvas" width="1024" height="768"></canvas>
 			
 		</div>
 		
 		<!-- scripts -->
-		<script src="scripts.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/main.js"></script>
 		
 	</body>
 </html>
