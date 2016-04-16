@@ -51,7 +51,7 @@ $(document).ready(function() {
 	}
 
 	// popup explanations
-	$('a:not([data-popup=""])').on('click', function() {
+	$('a[data-popup]').on('click', function() {
 		var $this = $(this);
 		// set title
 		$('#modal-popup .modal-title').html($this.parent().html().replace(/(<([^>]+)>)/ig, '').replace('(?)', '')); // strip tags and link
