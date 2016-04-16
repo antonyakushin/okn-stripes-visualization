@@ -20,6 +20,9 @@ $(document).ready(function() {
 		isFullscreenAvailable: function() {
 			return (canvas.requestFullscreen || canvas.webkitRequestFullScreen || canvas.mozRequestFullScreen || canvas.msRequestFullscreen);
 		},
+		canvasSize: function() {
+			return (settings.computed.isMovementHorizontal ? canvas.width : canvas.height);
+		},
 		computed: {} // computed settings placeholder (allows calling frequently without recalculating)
 	}
 	// runtime/state variables
@@ -208,31 +211,31 @@ $(document).ready(function() {
 			context.clearRect(0, 0, canvas.width, canvas.height);
 			// draw stripes
 			context.fillStyle = settings.stripeColor;
-			for (var barPixelCoord = -settings.computed.stripeWidth * 4 + runtime.stripeOffset; barPixelCoord < canvas.width + settings.computed.stripeWidth * 2; barPixelCoord += settings.computed.stripeWidth * 2) {
+			for (var barPixelCoord = -settings.computed.stripeSize * 4 + runtime.stripeOffset; barPixelCoord < settings.canvasSize() + settings.computed.stripeSize * 2; barPixelCoord += settings.computed.stripeSize * 2) {
 				if (settings.computed.isMovementHorizontal) {
-					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeWidth, canvas.height);
+					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeSize, canvas.height);
 				} else {
-					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeWidth);
+					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeSize);
 				}
 			}
 			// draw background
 			context.fillStyle = settings.backgroundColor;
-			for (var barPixelCoord = -settings.computed.stripeWidth * 3 + runtime.stripeOffset; barPixelCoord < canvas.width + settings.computed.stripeWidth * 2; barPixelCoord += settings.computed.stripeWidth * 2) {
+			for (var barPixelCoord = -settings.computed.stripeSize * 3 + runtime.stripeOffset; barPixelCoord < settings.canvasSize() + settings.computed.stripeSize * 2; barPixelCoord += settings.computed.stripeSize * 2) {
 				if (settings.computed.isMovementHorizontal) {
-					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeWidth, canvas.height);
+					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeSize, canvas.height);
 				} else {
-					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeWidth);
+					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeSize);
 				}
 			}
 			// move
 			if (settings.computed.isMovementForward) {
 				runtime.stripeOffset += settings.computed.movePixelsPerFrame;
-				if (runtime.stripeOffset >= settings.computed.stripeWidth * 2) {
+				if (runtime.stripeOffset >= settings.computed.stripeSize * 2) {
 					runtime.stripeOffset = 0;
 				}
 			} else {
 				runtime.stripeOffset -= settings.computed.movePixelsPerFrame;
-				if (runtime.stripeOffset <= -settings.computed.stripeWidth * 2) {
+				if (runtime.stripeOffset <= -settings.computed.stripeSize * 2) {
 					runtime.stripeOffset = 0;
 				}
 			}
@@ -258,8 +261,8 @@ $(document).ready(function() {
 		settings.computed.isMovementHorizontal = (settings.movement == 'left-to-right' || settings.movement == 'right-to-left');
 		settings.computed.isMovementForward = (settings.movement == 'left-to-right' || settings.movement == 'top-to-bottom');
 		settings.computed.msPerFrame = (1000 / defaults.framesPerSecond);
-		settings.computed.stripeWidth = (canvas.width / settings.stripes);
-		settings.computed.movePixelsPerFrame = (settings.computed.isMovementHorizontal ? canvas.width : canvas.height) / (settings.speed * defaults.framesPerSecond);
+		settings.computed.stripeSize = (settings.canvasSize() / settings.stripes);
+		settings.computed.movePixelsPerFrame = (settings.canvasSize() / (settings.speed * defaults.framesPerSecond));
 	}
 	
 	// exit app and return to settings
