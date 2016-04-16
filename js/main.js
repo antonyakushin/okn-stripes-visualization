@@ -30,8 +30,8 @@ $(document).ready(function() {
 	$('#app-panel').on('click', returnToSettings); // return to settings
 	// keypress
 	$(document).keyup(function(e) {
-		// check if escape key and app panel is visible
-		if (e.keyCode == 27 && $('#app-panel').is(':visible')) {
+		// check if app panel is visible
+		if ($('#app-panel').is(':visible')) {
 			// if yes, return to settings
 			returnToSettings();
 		}
