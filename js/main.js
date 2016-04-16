@@ -15,7 +15,10 @@ $(document).ready(function() {
 	// settings
 	var settings = {
 		isFullscreen: function() {
-			return (document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen);
+			return (document.fullscreenElement || document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement);
+		},
+		isFullscreenAvailable: function() {
+			return (canvas.requestFullscreen || canvas.webkitRequestFullScreen || canvas.mozRequestFullScreen || canvas.msRequestFullscreen);
 		},
 		computed: {} // computed settings placeholder (allows calling frequently without recalculating)
 	}
@@ -36,6 +39,14 @@ $(document).ready(function() {
 	
 	// call resize
 	resizeCanvas();
+	// check if fullscreen is available
+	if (!settings.isFullscreenAvailable()) {
+		// if no, remove fullscreen option
+		defaults.fullscreen = 'off';
+		$('#settings-fullscreen').val('off');
+		$('#settings-fullscreen option[value=off]').html('Off - Not available in this browser');
+		$('#settings-fullscreen').prop('disabled', true);
+	}
 
 	// popup explanations
 	$('a:not([data-popup=""])').on('click', function() {
@@ -90,14 +101,16 @@ $(document).ready(function() {
 		if (settings.stopAfter > 0) {
 			runtime.stopAfterHandle = setTimeout(returnToSettings, settings.stopAfter * 1000);
 		}
-		if (settings.fullscreen) {
+		if (settings.isFullscreenAvailable() && settings.fullscreen) {
 			// start fullscreen
-			if (canvas.webkitRequestFullScreen) {
+			if (canvas.requestFullScreen) {
+				canvas.requestFullScreen();
+			} else if (canvas.webkitRequestFullScreen) {
 				canvas.webkitRequestFullScreen();
 			} else if (canvas.mozRequestFullScreen) {
 				canvas.mozRequestFullScreen(); 
-			} else {
-				canvas.requestFullScreen();
+			} else if (canvas.msRequestFullscreen) {
+				canvas.msRequestFullscreen();
 			}
 		}
 		// hide settings panel
@@ -144,7 +157,7 @@ $(document).ready(function() {
 	$(window).on('resize', resizeCanvas);
 
 	// when fullscreen changed
-	$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {
+	$(document).bind('fullscreenchange webkitfullscreenchange mozfullscreenchange MSFullscreenChange', function() {
 		// check if fullscreen turned off and app running
 		if (!settings.isFullscreen() && $('#app-panel').is(':visible')) {
 			// if yes, return to settings
@@ -258,14 +271,16 @@ $(document).ready(function() {
 			runtime.stopAfterHandle = null;
 		}
 		// check if fullscreen
-		if (settings.isFullscreen()) {
+		if (settings.isFullscreenAvailable() && settings.isFullscreen()) {
 			// if yes, stop fullscreen
-			if (document.webkitIsFullScreen) {
+			if (document.fullScreenElement) {
+				document.cancelFullScreen();
+			} else if (document.webkitIsFullScreen) {
 				document.webkitCancelFullScreen();
 			} else if (document.mozFullScreen) {
 				document.mozCancelFullScreen(); 
-			} else {
-				document.cancelFullScreen();
+			} else if (document.msFullscreenElement) {
+				document.msExitFullscreen();
 			}
 		}
 		// stop app
