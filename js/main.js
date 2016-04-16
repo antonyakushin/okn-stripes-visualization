@@ -33,7 +33,6 @@ $(document).ready(function() {
 	}
 	
 	// canvas and context
-	var $canvas = $('#app-canvas');
 	var canvas = document.getElementById('app-canvas');
 	var context = canvas.getContext('2d');
 	
@@ -139,15 +138,15 @@ $(document).ready(function() {
 	function resizeCanvas() {
 		// track if changed
 		var hasChanged = false;
-		if ($canvas.width() != $(window).innerWidth()) {
+		if (canvas.width != $(window).innerWidth()) {
 			// update width on change
-			$canvas.width($(window).innerWidth());
+			canvas.width = $(window).innerWidth();
 			hasChanged = true;
 		}
-		if ($canvas.height() != $(window).innerHeight()) {
+		if (canvas.height != $(window).innerHeight()) {
 			// update height on change
 			hasChanged = true;
-			$canvas.height($(window).innerHeight());
+			canvas.height = $(window).innerHeight();
 		}
 		// clear computed settings on change
 		if (hasChanged) {
@@ -259,7 +258,7 @@ $(document).ready(function() {
 		settings.computed.isMovementHorizontal = (settings.movement == 'left-to-right' || settings.movement == 'right-to-left');
 		settings.computed.isMovementForward = (settings.movement == 'left-to-right' || settings.movement == 'top-to-bottom');
 		settings.computed.msPerFrame = (1000 / defaults.framesPerSecond);
-		settings.computed.stripeWidth = ($canvas.width() / settings.stripes);
+		settings.computed.stripeWidth = (canvas.width / settings.stripes);
 		settings.computed.movePixelsPerFrame = (settings.computed.isMovementHorizontal ? canvas.width : canvas.height) / (settings.speed * defaults.framesPerSecond);
 	}
 	
