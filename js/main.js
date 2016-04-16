@@ -5,7 +5,7 @@ $(document).ready(function() {
 	var defaults = {
 		movement: 'left-to-right',
 		stripes: 10,
-		speed: 10,
+		speed: 20,
 		stripeColor: '#999',
 		backgroundColor: '#FFF',
 		stopAfter: '',
