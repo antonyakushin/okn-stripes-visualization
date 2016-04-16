@@ -47,7 +47,7 @@
 						<div class="form-group col-sm-4">
 							<label for="settings-movement">Direction of movement <a href="#" data-popup="This is the direction that stripes will move across the screen">(?)</a></label>
 							<select class="form-control" id="settings-movement">
-								<option value="left-to-right" selected>Left to right</option>
+								<option value="left-to-right">Left to right</option>
 								<option value="right-to-left">Right to left</option>
 								<option value="top-to-bottom">Top to bottom</option>
 								<option value="bottom-to-top">Bottom to top</option>
@@ -55,11 +55,11 @@
 						</div>
 						<div class="form-group col-sm-4">
 							<label for="settings-stripes">Number of stripes <a href="#" data-popup="This is the total number of stripes that appear on the screen at any time">(?)</a></label>
-							<input type="text" class="form-control" id="settings-number-of-stripes" value="10" />
+							<input type="text" class="form-control integers-only" id="settings-stripes" />
 						</div>
 						<div class="form-group col-sm-4">
 							<label for="settings-speed">Speed (seconds across screen) <a href="#" data-popup="This is the number of seconds it takes a stripe to go from one side of the screen to the other">(?)</a></label>
-							<input type="text" class="form-control" id="settings-speed" value="10" />
+							<input type="text" class="form-control integers-only" id="settings-speed" />
 						</div>
 					</fieldset>
 
@@ -76,14 +76,14 @@
 
 					<fieldset>
 						<div class="form-group col-sm-6">
-							<label for="settings-speed">Stop after (seconds) <a href="#" data-popup="This is the number of seconds after which the application should automatically exit and return to the settings screen">(?)</a></label>
-							<input type="text" class="form-control" id="settings-speed" value="10" />
+							<label for="settings-stop-after">Stop after (seconds) <a href="#" data-popup="This is the number of seconds after which the application should automatically exit and return to the settings screen">(?)</a></label>
+							<input type="text" class="form-control integers-only" id="settings-stop-after" />
 						</div>
 						<div class="form-group col-sm-6">
 							<label for="settings-fullscreen">Fullscreen mode <a href="#" data-popup="Fullscreen mode will take up the whole screen, press the escape key to exit fullscreen mode">(?)</a></label>
 							<select class="form-control" id="settings-fullscreen">
-								<option value="1" selected>On</option>
-								<option value="0">Off</option>
+								<option value="on" selected>On</option>
+								<option value="off">Off</option>
 							</select>
 						</div>
 					</fieldset>

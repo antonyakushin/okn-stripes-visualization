@@ -1,7 +1,12 @@
 // defaults
 var defaults = {
+	movement: 'left-to-right',
+	stripes: 10,
+	speed: 10,
 	stripeColor: '#999',
-	backgroundColor: '#FFF'
+	backgroundColor: '#FFF',
+	stopAfter: 10,
+	fullscreen: 'on'
 }
 
 // after jQuery loaded
@@ -9,7 +14,7 @@ $(document).ready(function() {
 
 	// popup explanations
 	$('a:not([data-popup=""])').on('click', function() {
-		$this = $(this);
+		var $this = $(this);
 		// set title
 		$('#modal-popup .modal-title').html($this.parent().html().replace(/(<([^>]+)>)/ig, '').replace('(?)', '')); // strip tags and link
 		// set text
@@ -19,7 +24,14 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// set up elements
+	// defaults
+	$('#settings-movement').val(defaults.movement);
+	$('#settings-stripes').val(defaults.stripes);
+	$('#settings-speed').val(defaults.speed);
+	$('#settings-stop-after').val(defaults.stopAfter);
+	$('#settings-fullscreen').val(defaults.fullscreen);
+	
+	// color pickers
 	$('#settings-color-stripe').spectrum({
 		color: defaults.stripeColor
 	});
@@ -27,8 +39,6 @@ $(document).ready(function() {
 		color: defaults.backgroundColor
 	});
 
-	// attach events to panel elements
-	
 	// disclaimer button
 	$('#disclaimer-button').on('click', function() {
 		// hide disclaimer panel
@@ -65,6 +75,34 @@ $(document).ready(function() {
 		if ($('#app-panel').is(':visible')) {
 			// if yes, return to settings
 			returnToSettings();
+		}
+	});
+	
+	// enforce integer-only inputs
+	$('.integers-only').on('keydown blur', function() {
+		var $this = $(this);
+		var cleanVal = $this.val().replace(/[^0-9]/g, '');
+		if (!cleanVal) {
+			switch ($this.attr('id')) {
+				case 'settings-movement':
+					cleanVal = defaults.movement;
+					break;
+				case 'settings-stripes':
+					cleanVal = defaults.stripes;
+					break;
+				case 'settings-speed':
+					cleanVal = defaults.speed;
+					break;
+				case 'settings-stop-after':
+					cleanVal = defaults.stopAfter;
+					break;
+				case 'settings-fullscreen':
+					cleanVal = defaults.fullscreen;
+					break;
+			}
+		}
+		if (cleanVal != $this.val()) {
+			$this.val(cleanVal);
 		}
 	});
 	
