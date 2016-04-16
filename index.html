@@ -3,132 +3,127 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>MDDS Web Application</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="lib/spectrum/spectrum.css">
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
+		
+		<div class="container">
 	
-		<!-- disclaimer panel -->
-		<div id="disclaimer-panel" class="panel">
-		
-			<h1>Disclaimer</h1>
-			<p>This application should only be used under the direction of a doctor.</p>
+			<!-- disclaimer panel -->
+			<div id="disclaimer-panel" class="row">
+				<div class="col-sm-12">
+				
+					<h1>Welcome</h1>
+					<p>This web application helps researchers of MdDS (Mal de Débarquement Syndrome) treat patients and find a cure. A common treatment involves the patient watching stripes moving across a screen. This web application is intended to provide this treatment in a browser- and platform-independent way.</p>
+				
+					<h1>Disclaimer</h1>
+					<p>This application should only be used under the direction of a doctor.</p>
+					
+					<h1>License</h1>
+					<p>The MIT License (MIT)</p>
+					<p>Copyright (c) 2016 Anton Yakushin</p>
+					<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+					<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+					<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+					
+					<h1>Accept</h1>
+					<p>Click the button below to accept the terms of the disclaimer and license above. By using this application, I accept full responsibility and liability for any issues or side effects that arise from its use.</p>
+					<button class="btn-primary btn-lg" id="disclaimer-button">Accept and Continue</button>
+				
+				</div>
+			</div>
 			
-			<h1>License</h1>
-			<p>The MIT License (MIT)</p>
-			<p>Copyright (c) 2016 Anton Yakushin</p>
-			<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-			<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-			<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-			
-			<h1>Accept</h1>
-			<p>Click the button below to accept the terms of the disclaimer and license above. By using this application, I accept full responsibility and liability for any issues or side effects that arise from its use.</p>
-			<button id="disclaimer-button">Accept and Continue</button>
+			<!-- settings panel -->
+			<div id="settings-panel" class="row default-hidden">
+				
+				<h1>Settings</h1>
+
+				<form>
+				
+					<fieldset>
+						<div class="form-group col-sm-4">
+							<label for="settings-movement">Direction of movement <a href="#" data-popup="This is the direction that stripes will move across the screen">(?)</a></label>
+							<select class="form-control" id="settings-movement">
+								<option value="left-to-right" selected>Left to right</option>
+								<option value="right-to-left">Right to left</option>
+								<option value="top-to-bottom">Top to bottom</option>
+								<option value="bottom-to-top">Bottom to top</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-4">
+							<label for="settings-stripes">Number of stripes <a href="#" data-popup="This is the total number of stripes that appear on the screen at any time">(?)</a></label>
+							<input type="text" class="form-control" id="settings-number-of-stripes" value="10" />
+						</div>
+						<div class="form-group col-sm-4">
+							<label for="settings-speed">Speed (seconds across screen) <a href="#" data-popup="This is the number of seconds it takes a stripe to go from one side of the screen to the other">(?)</a></label>
+							<input type="text" class="form-control" id="settings-speed" value="10" />
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<div class="form-group col-sm-6">
+							<label for="settings-color-stripe">Stripe color <a href="#" data-popup="This is the color of each stripe">(?)</a></label>
+							<input type="text" class="form-control" id="settings-color-stripe" />
+						</div>
+						<div class="form-group col-sm-6">
+							<label for="settings-color-background">Background color <a href="#" data-popup="This is the background color, under the stripes">(?)</a></label>
+							<input type="text" class="form-control" id="settings-color-background" />
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<div class="form-group col-sm-6">
+							<label for="settings-speed">Stop after (seconds) <a href="#" data-popup="This is the number of seconds after which the application should automatically exit and return to the settings screen">(?)</a></label>
+							<input type="text" class="form-control" id="settings-speed" value="10" />
+						</div>
+						<div class="form-group col-sm-6">
+							<label for="settings-fullscreen">Fullscreen mode <a href="#" data-popup="Fullscreen mode will take up the whole screen, press the escape key to exit fullscreen mode">(?)</a></label>
+							<input type="text" class="form-control" id="settings-fullscreen" />
+						</div>
+					</fieldset>
+					
+				</form>
+				
+				<h1>Usage</h1>
+				<p>To exit the application and return to the settings, click anywhere on the screen or press any key.</p>
+
+				<button class="btn-primary btn-lg" id="settings-button">Start Web Application</button>
+				
+			</div>
 			
 		</div>
 		
-		<!-- settings panel -->
-		<div id="settings-panel" class="panel hidden clearfix">
-			
-			<h1>Settings</h1>
-
-			<!-- movement -->
-			<div class="clearfix">
-				<div class="setting">
-					<h2>Movement:</h2>
-					<label for="settings-movement-left-to-right">
-						<input type="radio" name="settings-movement" id="settings-movement-left-to-right" value="left-to-right" checked /> Left to right
-					</label>
-					<label for="settings-movement-right-to-left">
-						<input type="radio" name="settings-movement" id="settings-movement-right-to-left" value="right-to-left" /> Right to left
-					</label>
-					<label for="settings-movement-top-to-bottom">
-						<input type="radio" name="settings-movement" id="settings-movement-top-to-bottom" value="top-to-bottom" /> Top to bottom
-					</label>
-					<label for="settings-movement-bottom-to-top">
-						<input type="radio" name="settings-movement" id="settings-movement-bottom-to-top" value="bottom-to-top" /> Bottom to top
-					</label>
-					<p class="description">This is the direction that stripes will move across the screen.</p>
-				</div>
-			</div>
-
-			<!-- number of stripes -->
-			<div class="clearfix">
-				<div class="setting">
-					<h2>Number of stripes:</h2>
-					<label for="settings-number-of-stripes">
-						<input type="text" name="settings-number-of-stripes" id="settings-number-of-stripes" value="10" /> stripes
-					</label>
-					<p class="description">This is the total number of stripes that appear on the screen at any time.</p>
-				</div>
-			</div>
-
-			<!-- speed -->
-			<div class="clearfix">
-				<div class="setting">
-					<h2>Speed:</h2>
-					<label for="settings-speed">
-						<input type="text" name="settings-speed" id="settings-speed" value="10" /> seconds
-					</label>
-					<p class="description">This is the number of seconds it takes a stripe to go from one side of the screen to the other.</p>
-				</div>
-			</div>
-
-			<!-- stop after -->
-			<div class="clearfix">
-				<div class="setting">
-					<h2>Stop after:</h2>
-					<label for="settings-stop-after">
-						<input type="text" name="settings-stop-after" id="settings-stop-after" value="10" /> seconds
-					</label>
-					<p class="description">This is the number of seconds after which the application should automatically exit and return to the settings screen.</p>
-				</div>
-			</div>
-
-			<!-- colors -->
-			<div class="clearfix">
-				<div class="setting">
-					<h2>Colors:</h2>
-					<label for="settings-colors-main">
-						<input type="text" name="settings-colors" id="settings-colors-main" value="10" /> main stripes
-					</label>
-					<label for="settings-colors-alt">
-						<input type="text" name="settings-colors" id="settings-colors-alt" value="10" /> alternating stripes
-					</label>
-					<p class="description extra">This is the color of the main and alternating stripes.</p>
-				</div>
-			</div>
-
-			<!-- fullscreen -->
-			<div class="clearfix">
-				<div class="setting">
-					<h2>Run in fullscreen:</h2>
-					<label for="settings-fullscreen-on">
-						<input type="radio" name="settings-fullscreen" id="settings-fullscreen-on" value="1" checked /> On
-					</label>
-					<label for="settings-fullscreen-off">
-						<input type="radio" name="settings-fullscreen" id="settings-fullscreen-off" value="0" /> Off
-					</label>
-					<p class="description">Fullscreen will take up the whole screen. To exit fullscreen mode, press the escape key.</p>
-				</div>
-			</div>
-			
-			<h1>Usage</h1>
-			<p>To exit the application and return to the settings, click anywhere on the screen or press any key.</p>
-
-			<button id="settings-button">Start Web Application</button>
-			
-		</div>
-		
-		<!-- app panel -->
-		<div id="app-panel" class="hidden">
+		<!-- app panel (outside container) -->
+		<div id="app-panel" class="default-hidden">
 			
 			<canvas id="app-canvas" width="1024" height="768"></canvas>
 			
 		</div>
+
+		<!-- modal popup -->
+		<div id="modal-popup" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title"></h4>
+					</div>
+					<div class="modal-body">
+						<p></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<!-- scripts -->
 		<script src="js/jquery.min.js"></script>
+		<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="lib/spectrum/spectrum.js"></script>
 		<script src="js/main.js"></script>
 		

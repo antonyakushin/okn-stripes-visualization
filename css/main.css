@@ -1,80 +1,23 @@
 /*
-	Global styles
-*/
-* {
-	margin: 0;
-	padding: 0;
-}
-html, body {
-	width: 100%;
-	height: 100%;
-}
-/*
 	Element styles
 */
-h1, p {
-	margin-bottom: 10px;
-}
-h1 {
-	font-size: 2em;
-	font-weight: bold;
-}
-h2 {
-	display: inline;
-	font-size: 1em;
-	font-weight: bold;
-	margin-right: 10px;
-}
-p {
-	font-size: 1em;
-}
-button {
-	padding: 10px;
-}
-input[type=text] {
-	margin-bottom: 10px;
-}
 /*
 	Class styles
 */
-.hidden {
+.default-hidden {
 	display: none;
-}
-.panel {
-	margin: 10px;
-}
-.setting {
-	float: left;
-	background-color: #CCC;
-	border: 1px solid #999;
-	margin-bottom: 10px;
-	padding: 10px;
-}
-.setting p:last-child {
-	margin-bottom: 0;
-}
-.setting input[type=radio], .setting input[type=checkbox] {
-	margin-bottom: 10px;
-}
-p.description {
-	font-size: 0.9em;
-}
-p.description.extra {
-	margin-top: 10px;
 }
 /*
 	Id and specific styles
 */
+#app-panel {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
 #app-canvas {
 	display:block;
-}
-/*
-	Clearfix
-*/
-.clearfix:after {
-	content: " "; /* space for older browsers */
-	visibility: hidden;
-	display: block;
-	height: 0;
-	clear: both;
+	width: 100%;
+	height: 100%;
 }
