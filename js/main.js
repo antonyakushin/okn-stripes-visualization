@@ -10,7 +10,7 @@ $(document).ready(function() {
 		backgroundColor: '#FFF',
 		stopAfter: '',
 		fullscreen: 'on',
-		framesPerSecond: 60
+		framesPerSecond: 120
 	}
 	// settings
 	var settings = {
