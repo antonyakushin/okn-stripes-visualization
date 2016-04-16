@@ -1,4 +1,19 @@
+// defaults
+var defaults = {
+	mainColor: '#999',
+	altColor: '#FFF'
+}
+
+// after jQuery loaded
 $(document).ready(function() {
+
+	// set up elements
+	$('#settings-colors-main').spectrum({
+		color: defaults.mainColor
+	});
+	$('#settings-colors-alt').spectrum({
+		color: defaults.altColor
+	});
 
 	// attach events to panel elements
 	

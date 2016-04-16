@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>MDDS Web Application</title>
+		<link rel="stylesheet" href="plugins/spectrum/spectrum.min.css">
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
@@ -27,11 +28,91 @@
 		</div>
 		
 		<!-- settings panel -->
-		<div id="settings-panel" class="panel hidden">
+		<div id="settings-panel" class="panel hidden clearfix">
 			
 			<h1>Settings</h1>
-			<p>TODO</p>
 
+			<!-- movement -->
+			<div class="clearfix">
+				<div class="setting">
+					<h2>Movement</h2>
+					<label for="settings-movement-left-to-right">
+						<input type="radio" name="settings-movement" id="settings-movement-left-to-right" value="left-to-right" checked /> Left to right
+					</label>
+					<label for="settings-movement-right-to-left">
+						<input type="radio" name="settings-movement" id="settings-movement-right-to-left" value="right-to-left" /> Right to left
+					</label>
+					<label for="settings-movement-top-to-bottom">
+						<input type="radio" name="settings-movement" id="settings-movement-top-to-bottom" value="top-to-bottom" /> Top to bottom
+					</label>
+					<label for="settings-movement-bottom-to-top">
+						<input type="radio" name="settings-movement" id="settings-movement-bottom-to-top" value="bottom-to-top" /> Bottom to top
+					</label>
+					<p class="description">This is the direction that stripes will move across the screen.</p>
+				</div>
+			</div>
+
+			<!-- number of stripes -->
+			<div class="clearfix">
+				<div class="setting">
+					<h2>Number of stripes</h2>
+					<label for="settings-number-of-stripes">
+						<input type="text" name="settings-number-of-stripes" id="settings-number-of-stripes" value="10" /> stripes
+					</label>
+					<p class="description">This is the total number of stripes that appear on the screen at any time.</p>
+				</div>
+			</div>
+
+			<!-- speed -->
+			<div class="clearfix">
+				<div class="setting">
+					<h2>Speed</h2>
+					<label for="settings-speed">
+						<input type="text" name="settings-speed" id="settings-speed" value="10" /> seconds
+					</label>
+					<p class="description">This is the number of seconds it takes a stripe to go from one side of the screen to the other.</p>
+				</div>
+			</div>
+
+			<!-- stop after -->
+			<div class="clearfix">
+				<div class="setting">
+					<h2>Stop after</h2>
+					<label for="settings-stop-after">
+						<input type="text" name="settings-stop-after" id="settings-stop-after" value="10" /> seconds
+					</label>
+					<p class="description">This is the number of seconds after which the application should automatically exit and return to the settings screen.</p>
+				</div>
+			</div>
+
+			<!-- colors -->
+			<div class="clearfix">
+				<div class="setting">
+					<h2>Colors</h2>
+					<label for="settings-colors-main">
+						<input type="text" name="settings-colors" id="settings-colors-main" value="10" /> main stripes
+					</label>
+					<label for="settings-colors-alt">
+						<input type="text" name="settings-colors" id="settings-colors-alt" value="10" /> alternating stripes
+					</label>
+					<p class="description extra">This is the color of the main and alternating stripes.</p>
+				</div>
+			</div>
+
+			<!-- fullscreen -->
+			<div class="clearfix">
+				<div class="setting">
+					<h2>Run in fullscreen?</h2>
+					<label for="settings-fullscreen-on">
+						<input type="radio" name="settings-fullscreen" id="settings-fullscreen-on" value="1" checked /> On
+					</label>
+					<label for="settings-fullscreen-off">
+						<input type="radio" name="settings-fullscreen" id="settings-fullscreen-off" value="0" /> Off
+					</label>
+					<p class="description">Fullscreen will take up the whole screen. To exit fullscreen mode, press the escape key.</p>
+				</div>
+			</div>
+			
 			<h1>Usage</h1>
 			<p>To exit the application and return to the settings, click anywhere on the screen or press any key.</p>
 
@@ -48,6 +129,7 @@
 		
 		<!-- scripts -->
 		<script src="js/jquery.min.js"></script>
+		<script src="plugins/spectrum/spectrum.min.js"></script>
 		<script src="js/main.js"></script>
 		
 	</body>
