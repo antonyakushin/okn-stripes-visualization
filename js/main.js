@@ -1,19 +1,41 @@
-// defaults
-var defaults = {
-	movement: 'left-to-right',
-	stripes: 10,
-	speed: 10,
-	stripeColor: '#999',
-	backgroundColor: '#FFF',
-	stopAfter: 10,
-	fullscreen: 'on'
-}
-
 // after jQuery loaded
 $(document).ready(function() {
 
-	// canvas
+	// defaults
+	var defaults = {
+		movement: 'left-to-right',
+		stripes: 10,
+		speed: 10,
+		stripeColor: '#999',
+		backgroundColor: '#FFF',
+		stopAfter: '',
+		fullscreen: 'on',
+		framesPerSecond: 60
+	}
+	// settings
+	var settings = {
+		isFullscreen: function() {
+			return (document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen);
+		},
+		computed: {} // computed settings placeholder (allows calling frequently without recalculating)
+	}
+	// runtime/state variables
+	var runtime = {
+		// frame rate variables
+		timeLastFrameDrawn: null,
+		timeSinceLastFrameDrawn: null,
+		stripeOffset: 0,
+		isDrawing: false,
+		stopAfterHandle: null
+	}
+	
+	// canvas and context
 	var $canvas = $('#app-canvas');
+	var canvas = document.getElementById('app-canvas');
+	var context = canvas.getContext('2d');
+	
+	// call resize
+	resizeCanvas();
 
 	// popup explanations
 	$('a:not([data-popup=""])').on('click', function() {
@@ -54,20 +76,39 @@ $(document).ready(function() {
 	
 	// settings button
 	$('#settings-button').on('click', function() {
+		// save settings
+		settings.movement = $('#settings-movement').val();
+		settings.stripes = parseInt($('#settings-stripes').val());
+		settings.speed = parseInt($('#settings-speed').val());
+		settings.stripeColor = $('#settings-color-stripe').spectrum('get').toHexString();
+		settings.backgroundColor = $('#settings-color-background').spectrum('get').toHexString();
+		settings.stopAfter = parseInt($('#settings-stop-after').val());
+		settings.fullscreen = ($('#settings-fullscreen').val() == 'on');
+		// compute settings
+		computeSettings();
 		// apply settings
-		
-		// TODO
-		
+		if (settings.stopAfter > 0) {
+			runtime.stopAfterHandle = setTimeout(returnToSettings, settings.stopAfter * 1000);
+		}
+		if (settings.fullscreen) {
+			// start fullscreen
+			if (canvas.webkitRequestFullScreen) {
+				canvas.webkitRequestFullScreen();
+			} else if (canvas.mozRequestFullScreen) {
+				canvas.mozRequestFullScreen(); 
+			} else {
+				canvas.requestFullScreen();
+			}
+		}
 		// hide settings panel
 		$('.container').hide();
 		// show app panel
 		$('#app-panel').show();
 		// scroll to top
 		scrollToTop();
-		// run app
-		
-		// TODO
-		
+		// start first animation frame
+		runtime.isDrawing = true;
+		window.requestAnimationFrame(drawCanvasFrame);
 	});
 	
 	// app panel
@@ -83,15 +124,33 @@ $(document).ready(function() {
 	
 	// resize canvas to full screen
 	function resizeCanvas() {
+		// track if changed
+		var hasChanged = false;
 		if ($canvas.width() != $(window).innerWidth()) {
+			// update width on change
 			$canvas.width($(window).innerWidth());
+			hasChanged = true;
 		}
 		if ($canvas.height() != $(window).innerHeight()) {
+			// update height on change
+			hasChanged = true;
 			$canvas.height($(window).innerHeight());
+		}
+		// clear computed settings on change
+		if (hasChanged) {
+			computeSettings();
 		}
 	}
 	$(window).on('resize', resizeCanvas);
-	resizeCanvas();
+
+	// when fullscreen changed
+	$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function() {
+		// check if fullscreen turned off and app running
+		if (!settings.isFullscreen() && $('#app-panel').is(':visible')) {
+			// if yes, return to settings
+			returnToSettings();
+		}
+	});
 	
 	// enforce integer-only inputs
 	$('.integers-only').on('keydown blur', function() {
@@ -116,10 +175,63 @@ $(document).ready(function() {
 					break;
 			}
 		}
+		if ($this.attr('id') == 'settings-stop-after' && cleanVal == 0) {
+			cleanVal = '';
+		}
 		if (cleanVal != $this.val()) {
 			$this.val(cleanVal);
 		}
 	});
+	
+	// draw canvas frame
+	function drawCanvasFrame() {
+		// draw using framerate
+		var timeNow = Date.now();
+		runtime.timeSinceLastFrameDrawn = timeNow - runtime.timeLastFrameDrawn;
+		if (runtime.timeSinceLastFrameDrawn > settings.computed.msPerFrame) {
+			runtime.timeLastFrameDrawn = timeNow - (runtime.timeSinceLastFrameDrawn % settings.computed.msPerFrame);
+			// stop drawing
+			context.save();
+			// clear frame
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			// draw stripes
+			context.fillStyle = settings.stripeColor;
+			for (var barPixelCoord = -settings.computed.stripeWidth * 4 + runtime.stripeOffset; barPixelCoord < canvas.width + settings.computed.stripeWidth * 2; barPixelCoord += settings.computed.stripeWidth * 2) {
+				if (settings.computed.isMovementHorizontal) {
+					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeWidth, canvas.height);
+				} else {
+					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeWidth);
+				}
+			}
+			// draw background
+			context.fillStyle = settings.backgroundColor;
+			for (var barPixelCoord = -settings.computed.stripeWidth * 3 + runtime.stripeOffset; barPixelCoord < canvas.width + settings.computed.stripeWidth * 2; barPixelCoord += settings.computed.stripeWidth * 2) {
+				if (settings.computed.isMovementHorizontal) {
+					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeWidth, canvas.height);
+				} else {
+					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeWidth);
+				}
+			}
+			// move
+			if (settings.computed.isMovementForward) {
+				runtime.stripeOffset += settings.computed.movePixelsPerFrame;
+				if (runtime.stripeOffset >= settings.computed.stripeWidth * 2) {
+					runtime.stripeOffset = 0;
+				}
+			} else {
+				runtime.stripeOffset -= settings.computed.movePixelsPerFrame;
+				if (runtime.stripeOffset <= -settings.computed.stripeWidth * 2) {
+					runtime.stripeOffset = 0;
+				}
+			}
+			// resume drawing
+			context.restore();
+		}
+		// continue to next animation frame if drawing
+		if (runtime.isDrawing) {
+			window.requestAnimationFrame(drawCanvasFrame);
+		}
+	}
 	
 	// helper functions
 
@@ -128,12 +240,36 @@ $(document).ready(function() {
 		$('html,body').animate({ scrollTop: 0 }, 'fast');
 	}
 	
+	// re-compute settings
+	function computeSettings() {
+		settings.computed = {};
+		settings.computed.isMovementHorizontal = (settings.movement == 'left-to-right' || settings.movement == 'right-to-left');
+		settings.computed.isMovementForward = (settings.movement == 'left-to-right' || settings.movement == 'top-to-bottom');
+		settings.computed.msPerFrame = (1000 / defaults.framesPerSecond);
+		settings.computed.stripeWidth = ($canvas.width() / settings.stripes);
+		settings.computed.movePixelsPerFrame = (settings.computed.isMovementHorizontal ? canvas.width : canvas.height) / (settings.speed * defaults.framesPerSecond);
+	}
+	
 	// exit app and return to settings
 	function returnToSettings() {
+		// clear stop after handle if it exists
+		if (runtime.stopAfterHandle !== null) {
+			clearTimeout(runtime.stopAfterHandle);
+			runtime.stopAfterHandle = null;
+		}
+		// check if fullscreen
+		if (settings.isFullscreen()) {
+			// if yes, stop fullscreen
+			if (document.webkitIsFullScreen) {
+				document.webkitCancelFullScreen();
+			} else if (document.mozFullScreen) {
+				document.mozCancelFullScreen(); 
+			} else {
+				document.cancelFullScreen();
+			}
+		}
 		// stop app
-		
-		// TODO
-		
+		runtime.isDrawing = false;
 		// hide app panel
 		$('#app-panel').hide();
 		// show settings panel
@@ -141,5 +277,5 @@ $(document).ready(function() {
 		// scroll to top
 		scrollToTop();
 	}
-
+	
 });
