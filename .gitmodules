@@ -1,3 +1,6 @@
 [submodule "lib/spectrum"]
 	path = lib/spectrum
 	url = https://github.com/bgrins/spectrum
+[submodule "lib/skeleton"]
+	path = lib/skeleton
+	url = https://github.com/dhg/Skeleton
