@@ -1,0 +1,3 @@
+[submodule "lib/spectrum"]
+	path = lib/spectrum
+	url = https://github.com/bgrins/spectrum
