@@ -12,6 +12,9 @@ var defaults = {
 // after jQuery loaded
 $(document).ready(function() {
 
+	// canvas
+	var $canvas = $('#app-canvas');
+
 	// popup explanations
 	$('a:not([data-popup=""])').on('click', function() {
 		var $this = $(this);
@@ -77,6 +80,18 @@ $(document).ready(function() {
 			returnToSettings();
 		}
 	});
+	
+	// resize canvas to full screen
+	function resizeCanvas() {
+		if ($canvas.width() != $(window).innerWidth()) {
+			$canvas.width($(window).innerWidth());
+		}
+		if ($canvas.height() != $(window).innerHeight()) {
+			$canvas.height($(window).innerHeight());
+		}
+	}
+	$(window).on('resize', resizeCanvas);
+	resizeCanvas();
 	
 	// enforce integer-only inputs
 	$('.integers-only').on('keydown blur', function() {
