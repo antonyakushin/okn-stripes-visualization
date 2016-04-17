@@ -7,6 +7,9 @@
 .default-hidden {
 	display: none;
 }
+.container {
+	padding-bottom: 15px;
+}
 /*
 	Id and specific styles
 */
