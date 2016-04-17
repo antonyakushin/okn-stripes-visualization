@@ -4,10 +4,10 @@ $(document).ready(function() {
 	// defaults
 	var defaults = {
 		movement: 'left-to-right',
-		stripes: 10,
+		stripes: 15,
 		speed: 20,
 		stripeColor: '#999',
-		backgroundColor: '#FFF',
+		backgroundColor: '#CCC',
 		stopAfter: '',
 		fullscreen: 'on',
 		framesPerSecond: 120
@@ -63,19 +63,7 @@ $(document).ready(function() {
 	});
 
 	// defaults
-	$('#settings-movement').val(defaults.movement);
-	$('#settings-stripes').val(defaults.stripes);
-	$('#settings-speed').val(defaults.speed);
-	$('#settings-stop-after').val(defaults.stopAfter);
-	$('#settings-fullscreen').val(defaults.fullscreen);
-	
-	// color pickers
-	$('#settings-color-stripe').spectrum({
-		color: defaults.stripeColor
-	});
-	$('#settings-color-background').spectrum({
-		color: defaults.backgroundColor
-	});
+	resetDefaults();
 
 	// disclaimer button
 	$('#disclaimer-button').on('click', function() {
@@ -87,8 +75,8 @@ $(document).ready(function() {
 		scrollToTop();
 	});
 	
-	// settings button
-	$('#settings-button').on('click', function() {
+	// settings run button
+	$('#settings-run-button').on('click', function() {
 		// save settings
 		settings.movement = $('#settings-movement').val();
 		settings.stripes = parseInt($('#settings-stripes').val());
@@ -124,6 +112,11 @@ $(document).ready(function() {
 		// start first animation frame
 		runtime.isDrawing = true;
 		window.requestAnimationFrame(drawCanvasFrame);
+	});
+	
+	// settings reset button
+	$('#settings-reset-button').on('click', function() {
+		resetDefaults();
 	});
 	
 	// app panel
@@ -263,6 +256,23 @@ $(document).ready(function() {
 		settings.computed.msPerFrame = (1000 / defaults.framesPerSecond);
 		settings.computed.stripeSize = (settings.canvasSize() / settings.stripes);
 		settings.computed.movePixelsPerFrame = (settings.canvasSize() / (settings.speed * defaults.framesPerSecond));
+	}
+	
+	// reset defaults
+	function resetDefaults() {
+		// inputs
+		$('#settings-movement').val(defaults.movement);
+		$('#settings-stripes').val(defaults.stripes);
+		$('#settings-speed').val(defaults.speed);
+		$('#settings-stop-after').val(defaults.stopAfter);
+		$('#settings-fullscreen').val(defaults.fullscreen);
+		// color pickers
+		$('#settings-color-stripe').spectrum({
+			color: defaults.stripeColor
+		});
+		$('#settings-color-background').spectrum({
+			color: defaults.backgroundColor
+		});
 	}
 	
 	// exit app and return to settings
