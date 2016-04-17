@@ -3,6 +3,11 @@ The purpose of this project is to help researchers of MdDS (Mal de Débarquement
 
 A common treatment involves the patient watching stripes moving across a screen. This repository is intended to provide this treatment in a browser- and platform-independent way through a user-friendly customizable web application. The application uses only HTML5, CSS, and JavaScript, which means it can be run in any modern browser or mobile device.
 
+The latest source code can be downloaded for offline use [here](http://mdds.nyc/app/MdDS.zip). After downloading, unzip the downloaded file to a location on your computer and open index.html in your web browser.
+
+# Live demo
+Try it out at [mdds.nyc/app](http://mdds.nyc/app/).
+
 # What is Mal de Debarquement?
 From [Wikipedia](https://en.wikipedia.org/wiki/Mal_de_debarquement): Mal de Débarquement Syndrome (MdDS, or common name disembarkment syndrome) is a rare neurological condition usually occurring after a cruise, aircraft flight, or other sustained motion event. The phrase "mal de débarquement" is French for "Sickness from Disembarkation". MdDS is typically diagnosed by a Neurologist or an Ear Nose & Throat Specialist when a person reports a persistent rocking, swaying, or bobbing feeling (though they are not necessarily rocking). This usually follows a cruise or other motion experience.
 
