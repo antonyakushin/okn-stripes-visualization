@@ -6,7 +6,7 @@ A common treatment involves the patient watching stripes moving across a screen.
 The latest source code can be downloaded for offline use [here](http://mdds.nyc/app/MdDS.zip). After downloading, unzip the downloaded file to a location on your computer and open index.html in your web browser.
 
 # System Requirements
-On Windows and Mac, this application supports the latest versions of the following browsers: Google Chrome, Mozilla Firefox, Internet Explorer 10+, Opera, or Microsoft Edge. Mobile device support varies by device and vendor (the latest versions of most major mobile browsers are supported). This application works in browsers which support HTML5 Canvas and requestAnimationFrame().
+On Windows and Mac, this application supports the latest versions of the following browsers: Google Chrome, Mozilla Firefox, Internet Explorer 10+, Safari, Opera, and Microsoft Edge. Mobile device support varies by device and vendor (the latest versions of major mobile browsers are typically supported). This application works in browsers which support HTML5 Canvas and requestAnimationFrame().
 
 # Live demo
 Try it out at [mdds.nyc/app](http://mdds.nyc/app/).
