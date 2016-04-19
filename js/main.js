@@ -37,6 +37,7 @@ $(document).ready(function() {
 	
 	// canvas and context
 	var canvas = document.getElementById('app-canvas');
+	var $canvas = $('#app-canvas');
 	var context = canvas.getContext('2d');
 	
 	// call resize
@@ -132,17 +133,20 @@ $(document).ready(function() {
 	
 	// resize canvas to full screen
 	function resizeCanvas() {
+		// get window size
+		var windowWidth = $(window).innerWidth();
+		var windowHeight = $(window).innerHeight();
 		// track if changed
 		var hasChanged = false;
-		if (canvas.width != $(window).innerWidth()) {
+		if (canvas.width != windowWidth) {
 			// update width on change
-			canvas.width = $(window).innerWidth();
+			$canvas.css('width', windowWidth); // override css
 			hasChanged = true;
 		}
-		if (canvas.height != $(window).innerHeight()) {
+		if (canvas.height != windowHeight) {
 			// update height on change
 			hasChanged = true;
-			canvas.height = $(window).innerHeight();
+			$canvas.css('height', windowHeight); // override css
 		}
 		// clear computed settings on change
 		if (hasChanged) {
