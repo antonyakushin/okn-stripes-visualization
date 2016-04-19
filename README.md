@@ -8,7 +8,7 @@ The latest source code can be downloaded for offline use [here](http://mdds.nyc/
 # System Requirements
 On Windows and Mac, this application supports the latest versions of the following browsers: Google Chrome, Mozilla Firefox, Internet Explorer 10+, Safari, Opera, and Microsoft Edge. Mobile device support varies by device and vendor (the latest versions of major mobile browsers are typically supported). This application works in browsers which support HTML5 Canvas and requestAnimationFrame().
 
-# Live demo
+# Live Demo
 Try it out at [mdds.nyc/app](http://mdds.nyc/app/).
 
 # What is Mal de Debarquement?
