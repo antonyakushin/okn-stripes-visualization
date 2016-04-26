@@ -165,7 +165,7 @@ $(document).ready(function() {
 	});
 	
 	// enforce integer-only inputs
-	$('.integers-only').on('keydown blur', function() {
+	$('.integers-only').on('blur', function() {
 		var $this = $(this);
 		var cleanVal = $this.val().replace(/[^0-9]/g, '');
 		if (!cleanVal) {
