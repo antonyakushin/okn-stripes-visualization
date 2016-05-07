@@ -1,6 +1,10 @@
 // after jQuery loaded
 $(document).ready(function() {
 
+	// constants
+	var constants = {
+		notes: 14
+	};
 	// defaults
 	var defaults = {
 		movement: 'left-to-right',
@@ -8,6 +12,8 @@ $(document).ready(function() {
 		speed: 20,
 		stripeColor: '#999',
 		backgroundColor: '#CCC',
+		metronome: 'on',
+		frequency: 0.05,
 		stopAfter: '',
 		fullscreen: 'on',
 		framesPerSecond: 120
@@ -31,7 +37,11 @@ $(document).ready(function() {
 		timeLastFrameDrawn: null,
 		timeSinceLastFrameDrawn: null,
 		stripeOffset: 0,
+		playNoteHandle: null,
+		previousNoteIndex: 0,
+		currentNoteIndex: 0,
 		isDrawing: false,
+		isPlaying: false,
 		stopAfterHandle: null
 	}
 	
@@ -84,16 +94,29 @@ $(document).ready(function() {
 		settings.speed = parseInt($('#settings-speed').val());
 		settings.stripeColor = $('#settings-color-stripe').spectrum('get').toHexString();
 		settings.backgroundColor = $('#settings-color-background').spectrum('get').toHexString();
+		settings.metronome = ($('#settings-metronome').val() == 'on');
+		settings.frequency = parseFloat($('#settings-frequency').val());
 		settings.stopAfter = parseInt($('#settings-stop-after').val());
 		settings.fullscreen = ($('#settings-fullscreen').val() == 'on');
 		// compute settings
 		computeSettings();
 		// apply settings
+		// enable metronome if set
+		if (settings.metronome) {
+			// set note handle
+			runtime.playNoteHandle = setInterval(playNextNote, settings.computed.noteSeconds * 1000);
+			// reset note indexes
+			runtime.currentNoteIndex = 0;
+			runtime.previousNoteIndex = -1;
+			// set playing
+			runtime.isPlaying = true;
+		}
+		// set stop after
 		if (settings.stopAfter > 0) {
 			runtime.stopAfterHandle = setTimeout(returnToSettings, settings.stopAfter * 1000);
 		}
+		// start fullscreen if available
 		if (settings.isFullscreenAvailable() && settings.fullscreen) {
-			// start fullscreen
 			if (canvas.requestFullScreen) {
 				canvas.requestFullScreen();
 			} else if (canvas.webkitRequestFullScreen) {
@@ -113,6 +136,8 @@ $(document).ready(function() {
 		// start first animation frame
 		runtime.isDrawing = true;
 		window.requestAnimationFrame(drawCanvasFrame);
+		// play first note
+		playNextNote();
 	});
 	
 	// settings reset button
@@ -154,6 +179,13 @@ $(document).ready(function() {
 		}
 	}
 	$(window).on('resize', resizeCanvas);
+	
+	// when metronome changed
+	$('#settings-metronome').on('change', function() {
+		var $this = $(this);
+		// enable or disable frequency based on whether metronome is on
+		$('#settings-frequency').prop('disabled', ($this.val() != 'on'));
+	});
 
 	// when fullscreen changed
 	$(document).bind('fullscreenchange webkitfullscreenchange mozfullscreenchange MSFullscreenChange', function() {
@@ -193,6 +225,44 @@ $(document).ready(function() {
 		if (cleanVal != $this.val()) {
 			$this.val(cleanVal);
 		}
+	});
+	
+	// enforce decimals-only inputs
+	$('.decimals-only').on('blur', function() {
+		var $this = $(this);
+		var cleanVal = $this.val().replace(/[^0-9\.]/g, '');
+		if (!$.isNumeric(cleanVal)) {
+			cleanVal = 0;
+		}
+		if (!cleanVal) {
+			switch ($this.attr('id')) {
+				case 'settings-frequency':
+					cleanVal = defaults.frequency;
+					break;
+			}
+		}
+		if (cleanVal != $this.val()) {
+			$this.val(cleanVal);
+			return false;
+		}
+	});
+	
+	// on frequency update
+	$('#settings-frequency').on('keydown blur', function(e) {
+		var $this = $(this);
+		var val = parseFloat($this.val());
+		// only enforce on blur
+		if (e.type == 'blur') {
+			// require 1 or less
+			if (val > 1.0) {
+				$this.val('1');
+			}
+			// do not allow 0
+			else if (val == 0) {
+				$this.val(defaults.frequency);
+			}
+		}
+		$('#settings-frequency-explanation').html(Math.round(1.0 / parseFloat($this.val()), 5));
 	});
 	
 	// draw canvas frame
@@ -260,6 +330,8 @@ $(document).ready(function() {
 		settings.computed.msPerFrame = (1000 / defaults.framesPerSecond);
 		settings.computed.stripeSize = (settings.canvasSize() / settings.stripes);
 		settings.computed.movePixelsPerFrame = (settings.canvasSize() / (settings.speed * defaults.framesPerSecond));
+		settings.computed.noteSeconds = (1.0 / settings.frequency) / parseFloat(constants.notes);
+		settings.computed.scaleSeconds = (1.0 / settings.frequency);
 	}
 	
 	// reset defaults
@@ -268,6 +340,8 @@ $(document).ready(function() {
 		$('#settings-movement').val(defaults.movement);
 		$('#settings-stripes').val(defaults.stripes);
 		$('#settings-speed').val(defaults.speed);
+		$('#settings-metronome').val(defaults.metronome);
+		$('#settings-frequency').val(defaults.frequency);
 		$('#settings-stop-after').val(defaults.stopAfter);
 		$('#settings-fullscreen').val(defaults.fullscreen);
 		// color pickers
@@ -277,6 +351,9 @@ $(document).ready(function() {
 		$('#settings-color-background').spectrum({
 			color: defaults.backgroundColor
 		});
+		// update dependent elements
+		$('#settings-metronome').trigger('change');
+		$('#settings-frequency').trigger('blur');
 	}
 	
 	// exit app and return to settings
@@ -299,14 +376,80 @@ $(document).ready(function() {
 				document.msExitFullscreen();
 			}
 		}
-		// stop app
+		// disable metronome if set
+		if (settings.metronome) {
+			// clear play note handle
+			clearInterval(runtime.playNoteHandle);
+			runtime.playNoteHandle = null;
+		}
+		// unset drawing
 		runtime.isDrawing = false;
+		// unset playing
+		runtime.isPlaying = false;
 		// hide app panel
 		$('#app-panel').hide();
 		// show settings panel
 		$('.container').show();
 		// scroll to top
 		scrollToTop();
+	}
+	
+	// play next note
+	function playNextNote() {
+		// get notes based on index
+		var currentNote = noteForIndex(runtime.currentNoteIndex);
+		var previousNote = noteForIndex(runtime.previousNoteIndex);
+		// stop previous note and rewind if playing
+		if (previousNote && !$('audio[data-note=' + previousNote + ']')[0].paused) {
+			$('audio[data-note=' + previousNote + ']')[0].pause();
+			$('audio[data-note=' + previousNote + ']')[0].currentTime = 0.0;
+		}
+		// play current note
+		$('audio[data-note=' + currentNote + ']')[0].play(); 
+		// save previous note index
+		runtime.previousNoteIndex = runtime.currentNoteIndex;
+		// increment note index
+		runtime.currentNoteIndex++;
+		if (runtime.currentNoteIndex == parseInt(constants.notes)) {
+			runtime.currentNoteIndex = 0;
+		}
+	}
+	
+	// get note based on index
+	function noteForIndex(noteIndex) {
+		// write out each note for clarity
+		switch (noteIndex) {
+			case 0:
+				return 'c1';
+			case 1:
+				return 'd1';
+			case 2:
+				return 'e1';
+			case 3:
+				return 'f1';
+			case 4:
+				return 'g1';
+			case 5:
+				return 'a1';
+			case 6:
+				return 'b1';
+			case 7:
+				return 'c2';
+			case 8:
+				return 'b1';
+			case 9:
+				return 'a1';
+			case 10:
+				return 'g1';
+			case 11:
+				return 'f1';
+			case 12:
+				return 'e1';
+			case 13:
+				return 'd1';
+			default:
+				return null;
+		}
 	}
 	
 });

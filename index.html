@@ -83,6 +83,21 @@
 
 					<fieldset>
 						<div class="form-group col-sm-6">
+							<label for="settings-metronome">Metronome <a href="#" data-popup="Metronome (not available in all browsers) plays 14 notes of a piano scale in a loop">(?)</a></label>
+							<select class="form-control" id="settings-metronome">
+								<option value="on" selected>On</option>
+								<option value="off">Off</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-6">
+							<label for="settings-frequency">Metronome frequency (Hz) <a href="#" data-popup="This is frequency with which the metronome scale should be played">(?)</a></label>
+							<input type="text" class="form-control decimals-only" id="settings-frequency" />
+							A full scale will be played every <span id="settings-frequency-explanation"></span> seconds.
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<div class="form-group col-sm-6">
 							<label for="settings-stop-after">Stop after (seconds) <a href="#" data-popup="This is the number of seconds after which the application should automatically exit and return to the settings screen">(?)</a></label>
 							<input type="text" class="form-control integers-only" id="settings-stop-after" placeholder="Optional" />
 						</div>
@@ -130,6 +145,42 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		
+		<!-- audio -->
+		<div class="default-hidden">
+			<audio class="default-hidden" data-note="c1">
+				<source src="lib/mp3-piano-sound/mp3/c1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/c1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="d1">
+				<source src="lib/mp3-piano-sound/mp3/d1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/d1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="e1">
+				<source src="lib/mp3-piano-sound/mp3/e1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/e1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="f1">
+				<source src="lib/mp3-piano-sound/mp3/f1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/f1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="g1">
+				<source src="lib/mp3-piano-sound/mp3/g1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/g1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="a1">
+				<source src="lib/mp3-piano-sound/mp3/a1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/a1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="b1">
+				<source src="lib/mp3-piano-sound/mp3/b1.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/b1.ogg" type="audio/ogg">
+			</audio>
+			<audio class="default-hidden" data-note="c2">
+				<source src="lib/mp3-piano-sound/mp3/c2.mp3" type="audio/mpeg">
+				<source src="lib/ogg-piano-sound/ogg/c2.ogg" type="audio/ogg">
+			</audio>
 		</div>
 		
 		<!-- scripts -->
