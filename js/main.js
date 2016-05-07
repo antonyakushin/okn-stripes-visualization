@@ -412,14 +412,13 @@ $(document).ready(function() {
 		var previousNote = noteForIndex(runtime.previousNoteIndex);
 		if (previousNote) {
 			var previousNoteElement = constants.computed.noteElements[previousNote];
-			if (!previousNoteElement.paused) {
-				previousNoteElement.pause();
-			}
-			previousNoteElement.currentTime = 0.0;
+			previousNoteElement.pause();
 		}
-		// play current note
+		// reset and play current note
 		var currentNote = noteForIndex(runtime.currentNoteIndex);
 		var currentNoteElement = constants.computed.noteElements[currentNote];
+		currentNoteElement.pause();
+		currentNoteElement.currentTime = 0;
 		currentNoteElement.play();
 		// update previous note index
 		runtime.previousNoteIndex = runtime.currentNoteIndex;
