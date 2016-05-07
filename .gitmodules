@@ -7,3 +7,6 @@
 [submodule "lib/mp3-piano-sound"]
 	path = lib/mp3-piano-sound
 	url = https://github.com/pffy/mp3-piano-sound
+[submodule "lib/ogg-piano-sound"]
+	path = lib/ogg-piano-sound
+	url = https://github.com/pffy/ogg-piano-sound
