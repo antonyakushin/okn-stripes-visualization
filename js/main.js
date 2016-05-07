@@ -3,7 +3,8 @@ $(document).ready(function() {
 
 	// constants
 	var constants = {
-		notes: 14
+		notes: 14,
+		computed: {}
 	};
 	// defaults
 	var defaults = {
@@ -45,6 +46,13 @@ $(document).ready(function() {
 		stopAfterHandle: null
 	}
 	
+	// compute constants
+	constants.computed.noteElements = {};
+	$('audio[data-note]').each(function() {
+		var $this = $(this);
+		constants.computed.noteElements[$this.attr('data-note')] = $this[0];
+	});
+	
 	// canvas and context
 	var canvas = document.getElementById('app-canvas');
 	var $canvas = $('#app-canvas');
@@ -72,9 +80,6 @@ $(document).ready(function() {
 		$('#modal-popup').modal();
 		return false;
 	});
-
-	// defaults
-	resetDefaults();
 
 	// disclaimer button
 	$('#disclaimer-button').on('click', function() {
@@ -110,6 +115,13 @@ $(document).ready(function() {
 			runtime.previousNoteIndex = -1;
 			// set playing
 			runtime.isPlaying = true;
+			// loop through all audio
+			for (var note in constants.computed.noteElements) {
+				// quickly toggle each on and off
+				var noteElement = constants.computed.noteElements[note];
+				noteElement.play();
+				noteElement.pause();
+			}
 		}
 		// set stop after
 		if (settings.stopAfter > 0) {
@@ -396,21 +408,24 @@ $(document).ready(function() {
 	
 	// play next note
 	function playNextNote() {
-		// get notes based on index
-		var currentNote = noteForIndex(runtime.currentNoteIndex);
-		var previousNote = noteForIndex(runtime.previousNoteIndex);
 		// stop previous note and rewind if playing
-		if (previousNote && !$('audio[data-note=' + previousNote + ']')[0].paused) {
-			$('audio[data-note=' + previousNote + ']')[0].pause();
-			$('audio[data-note=' + previousNote + ']')[0].currentTime = 0.0;
+		var previousNote = noteForIndex(runtime.previousNoteIndex);
+		if (previousNote) {
+			var previousNoteElement = constants.computed.noteElements[previousNote];
+			if (!previousNoteElement.paused) {
+				previousNoteElement.pause();
+			}
+			previousNoteElement.currentTime = 0.0;
 		}
 		// play current note
-		$('audio[data-note=' + currentNote + ']')[0].play(); 
-		// save previous note index
+		var currentNote = noteForIndex(runtime.currentNoteIndex);
+		var currentNoteElement = constants.computed.noteElements[currentNote];
+		currentNoteElement.play();
+		// update previous note index
 		runtime.previousNoteIndex = runtime.currentNoteIndex;
 		// increment note index
 		runtime.currentNoteIndex++;
-		if (runtime.currentNoteIndex == parseInt(constants.notes)) {
+		if (runtime.currentNoteIndex == constants.notes) {
 			runtime.currentNoteIndex = 0;
 		}
 	}
@@ -451,5 +466,8 @@ $(document).ready(function() {
 				return null;
 		}
 	}
+	
+	// reset defaults on load
+	resetDefaults();
 	
 });
