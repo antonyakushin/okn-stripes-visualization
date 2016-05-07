@@ -45,79 +45,81 @@
 			
 			<!-- settings panel -->
 			<div id="settings-panel" class="row default-hidden">
+				<div class="col-sm-12">
 				
-				<h1>Settings</h1>
+					<h1>Settings</h1>
 
-				<form>
-				
-					<fieldset>
-						<div class="form-group col-sm-4">
-							<label for="settings-movement">Direction of movement <a href="#" data-popup="This is the direction that stripes will move across the screen">(?)</a></label>
-							<select class="form-control" id="settings-movement">
-								<option value="left-to-right">Left to right</option>
-								<option value="right-to-left">Right to left</option>
-								<option value="top-to-bottom">Top to bottom</option>
-								<option value="bottom-to-top">Bottom to top</option>
-							</select>
-						</div>
-						<div class="form-group col-sm-4">
-							<label for="settings-stripes">Number of stripes <a href="#" data-popup="This is the total number of stripes that appear on the screen at any time">(?)</a></label>
-							<input type="text" class="form-control integers-only" id="settings-stripes" />
-						</div>
-						<div class="form-group col-sm-4">
-							<label for="settings-speed">Speed (seconds across screen) <a href="#" data-popup="This is the number of seconds it takes a stripe to go from one side of the screen to the other">(?)</a></label>
-							<input type="text" class="form-control integers-only" id="settings-speed" />
-						</div>
-					</fieldset>
-
-					<fieldset>
-						<div class="form-group col-sm-6">
-							<label for="settings-color-stripe">Stripe color <a href="#" data-popup="This is the color of each stripe">(?)</a></label>
-							<input type="text" class="form-control" id="settings-color-stripe" />
-						</div>
-						<div class="form-group col-sm-6">
-							<label for="settings-color-background">Background color <a href="#" data-popup="This is the background color, under the stripes">(?)</a></label>
-							<input type="text" class="form-control" id="settings-color-background" />
-						</div>
-					</fieldset>
-
-					<fieldset>
-						<div class="form-group col-sm-6">
-							<label for="settings-metronome">Metronome <a href="#" data-popup="Metronome (not available in all browsers) plays 14 notes of a piano scale in a loop">(?)</a></label>
-							<select class="form-control" id="settings-metronome">
-								<option value="on" selected>On</option>
-								<option value="off">Off</option>
-							</select>
-						</div>
-						<div class="form-group col-sm-6">
-							<label for="settings-frequency">Metronome frequency (Hz) <a href="#" data-popup="This is frequency with which the metronome scale should be played; some devices may not play all notes">(?)</a></label>
-							<input type="text" class="form-control decimals-only" id="settings-frequency" />
-							A full scale will be played every <span id="settings-frequency-explanation"></span> seconds.
-						</div>
-					</fieldset>
-
-					<fieldset>
-						<div class="form-group col-sm-6">
-							<label for="settings-stop-after">Stop after (seconds) <a href="#" data-popup="This is the number of seconds after which the application should automatically exit and return to the settings screen">(?)</a></label>
-							<input type="text" class="form-control integers-only" id="settings-stop-after" placeholder="Optional" />
-						</div>
-						<div class="form-group col-sm-6">
-							<label for="settings-fullscreen">Fullscreen mode <a href="#" data-popup="Fullscreen mode (not available in all browsers) will take up the whole screen; press the escape key to exit fullscreen mode">(?)</a></label>
-							<select class="form-control" id="settings-fullscreen">
-								<option value="on" selected>On</option>
-								<option value="off">Off</option>
-							</select>
-						</div>
-					</fieldset>
+					<form>
 					
-				</form>
-				
-				<h1>Usage</h1>
-				<p>To exit the application and return to the settings, click anywhere on the screen or press any key.</p>
+						<fieldset>
+							<div class="form-group col-sm-4">
+								<label for="settings-movement">Direction of movement <a href="#" data-popup="This is the direction that stripes will move across the screen">(?)</a></label>
+								<select class="form-control" id="settings-movement">
+									<option value="left-to-right">Left to right</option>
+									<option value="right-to-left">Right to left</option>
+									<option value="top-to-bottom">Top to bottom</option>
+									<option value="bottom-to-top">Bottom to top</option>
+								</select>
+							</div>
+							<div class="form-group col-sm-4">
+								<label for="settings-stripes">Number of stripes <a href="#" data-popup="This is the total number of stripes that appear on the screen at any time">(?)</a></label>
+								<input type="text" class="form-control integers-only" id="settings-stripes" />
+							</div>
+							<div class="form-group col-sm-4">
+								<label for="settings-speed">Speed (seconds across screen) <a href="#" data-popup="This is the number of seconds it takes a stripe to go from one side of the screen to the other">(?)</a></label>
+								<input type="text" class="form-control integers-only" id="settings-speed" />
+							</div>
+						</fieldset>
 
-				<button class="btn btn-primary btn-lg" id="settings-run-button">Start Web Application</button>
-				<button class="btn btn-default btn-lg" id="settings-reset-button">Reset Defaults</button>
-				
+						<fieldset>
+							<div class="form-group col-sm-6">
+								<label for="settings-color-stripe">Stripe color <a href="#" data-popup="This is the color of each stripe">(?)</a></label>
+								<input type="text" class="form-control" id="settings-color-stripe" />
+							</div>
+							<div class="form-group col-sm-6">
+								<label for="settings-color-background">Background color <a href="#" data-popup="This is the background color, under the stripes">(?)</a></label>
+								<input type="text" class="form-control" id="settings-color-background" />
+							</div>
+						</fieldset>
+
+						<fieldset>
+							<div class="form-group col-sm-6">
+								<label for="settings-metronome">Metronome <a href="#" data-popup="Metronome (not available in all browsers) plays 14 notes of a piano scale in a loop">(?)</a></label>
+								<select class="form-control" id="settings-metronome">
+									<option value="on" selected>On</option>
+									<option value="off">Off</option>
+								</select>
+							</div>
+							<div class="form-group col-sm-6">
+								<label for="settings-frequency">Metronome frequency (Hz) <a href="#" data-popup="This is frequency with which the metronome scale should be played; some devices may not play all notes">(?)</a></label>
+								<input type="text" class="form-control decimals-only" id="settings-frequency" />
+								A full scale will be played every <span id="settings-frequency-explanation"></span> seconds.
+							</div>
+						</fieldset>
+
+						<fieldset>
+							<div class="form-group col-sm-6">
+								<label for="settings-stop-after">Stop after (seconds) <a href="#" data-popup="This is the number of seconds after which the application should automatically exit and return to the settings screen">(?)</a></label>
+								<input type="text" class="form-control integers-only" id="settings-stop-after" placeholder="Optional" />
+							</div>
+							<div class="form-group col-sm-6">
+								<label for="settings-fullscreen">Fullscreen mode <a href="#" data-popup="Fullscreen mode (not available in all browsers) will take up the whole screen; press the escape key to exit fullscreen mode">(?)</a></label>
+								<select class="form-control" id="settings-fullscreen">
+									<option value="on" selected>On</option>
+									<option value="off">Off</option>
+								</select>
+							</div>
+						</fieldset>
+						
+					</form>
+					
+					<h1>Usage</h1>
+					<p>To exit the application and return to the settings, click anywhere on the screen or press any key.</p>
+
+					<button class="btn btn-primary btn-lg" id="settings-run-button">Start Web Application</button>
+					<button class="btn btn-default btn-lg" id="settings-reset-button">Reset Defaults</button>
+					
+				</div>
 			</div>
 			
 		</div>
