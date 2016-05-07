@@ -1,5 +1,5 @@
 # MdDS
-The purpose of this project is to help researchers of MdDS (Mal de Débarquement Syndrome) treat patients and find a cure.
+The purpose of this project is to help doctors and researchers treat patients with MdDS (Mal de Débarquement Syndrome).
 
 A common treatment involves the patient watching stripes moving across a screen. This repository is intended to provide this treatment in a browser- and platform-independent way through a user-friendly customizable web application. The application uses only HTML5, CSS, and JavaScript, which means it can be run in any modern browser or mobile device.
 
