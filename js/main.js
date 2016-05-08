@@ -13,12 +13,12 @@ $(document).ready(function() {
 		speed: 20,
 		stripeColor: '#999',
 		backgroundColor: '#CCC',
-		metronome: 'on',
+		metronome: 'off',
 		frequency: 0.05,
 		stopAfter: '',
 		fullscreen: 'on',
 		framesPerSecond: 120
-	}
+	};
 	// settings
 	var settings = {
 		isFullscreen: function() {
@@ -31,7 +31,7 @@ $(document).ready(function() {
 			return (settings.computed.isMovementHorizontal ? canvas.width : canvas.height);
 		},
 		computed: {} // computed settings placeholder (allows calling frequently without recalculating)
-	}
+	};
 	// runtime/state variables
 	var runtime = {
 		// frame rate variables
@@ -44,7 +44,7 @@ $(document).ready(function() {
 		isDrawing: false,
 		isPlaying: false,
 		stopAfterHandle: null
-	}
+	};
 	
 	// compute constants
 	constants.computed.noteElements = {};
@@ -106,7 +106,7 @@ $(document).ready(function() {
 		// compute settings
 		computeSettings();
 		// apply settings
-		// enable metronome if set
+		// enable metronome if on
 		if (settings.metronome) {
 			// set note handle
 			runtime.playNoteHandle = setInterval(playNextNote, settings.computed.noteSeconds * 1000);
@@ -148,8 +148,10 @@ $(document).ready(function() {
 		// start first animation frame
 		runtime.isDrawing = true;
 		window.requestAnimationFrame(drawCanvasFrame);
-		// play first note
-		playNextNote();
+		// play first note if metronome is on
+		if (settings.metronome) {
+			playNextNote();
+		}
 	});
 	
 	// settings reset button
