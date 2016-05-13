@@ -37,7 +37,9 @@ $(document).ready(function() {
 		// frame rate variables
 		timeLastFrameDrawn: null,
 		timeSinceLastFrameDrawn: null,
-		stripeOffset: 0,
+		stripeOffsetActual: 0,
+		stripeOffsetRounded: 0,
+		lastStripeOffsetRounded: 0,
 		playNoteHandle: null,
 		previousNoteIndex: 0,
 		currentNoteIndex: 0,
@@ -106,6 +108,9 @@ $(document).ready(function() {
 		// compute settings
 		computeSettings();
 		// apply settings
+		runtime.stripeOffsetActual = 0;
+		runtime.stripeOffsetRounded = 0;
+		runtime.lastStripeOffsetRounded = -1;
 		// enable metronome if on
 		if (settings.metronome) {
 			// set note handle
@@ -286,42 +291,49 @@ $(document).ready(function() {
 		runtime.timeSinceLastFrameDrawn = timeNow - runtime.timeLastFrameDrawn;
 		if (runtime.timeSinceLastFrameDrawn > settings.computed.msPerFrame) {
 			runtime.timeLastFrameDrawn = timeNow - (runtime.timeSinceLastFrameDrawn % settings.computed.msPerFrame);
-			// stop drawing
-			context.save();
-			// clear frame
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			// draw stripes
-			context.fillStyle = settings.stripeColor;
-			for (var barPixelCoord = -settings.computed.stripeSize * 4 + runtime.stripeOffset; barPixelCoord < settings.canvasSize() + settings.computed.stripeSize * 2; barPixelCoord += settings.computed.stripeSize * 2) {
-				if (settings.computed.isMovementHorizontal) {
-					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeSize, canvas.height);
-				} else {
-					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeSize);
+			// only draw if animation has moved
+			if (runtime.lastStripeOffsetRounded != runtime.stripeOffsetRounded) {
+				// stop drawing
+				context.save();
+				// clear frame
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				// draw stripes
+				context.fillStyle = settings.stripeColor;
+				for (var barPixelCoord = -settings.computed.stripeSize * 4 + runtime.stripeOffsetRounded; barPixelCoord < settings.canvasSize() + settings.computed.stripeSize * 2; barPixelCoord += settings.computed.stripeSize * 2) {
+					if (settings.computed.isMovementHorizontal) {
+						context.fillRect(barPixelCoord + runtime.stripeOffsetRounded, 0, settings.computed.stripeSize, canvas.height);
+					} else {
+						context.fillRect(0, barPixelCoord + runtime.stripeOffsetRounded, canvas.width, settings.computed.stripeSize);
+					}
 				}
-			}
-			// draw background
-			context.fillStyle = settings.backgroundColor;
-			for (var barPixelCoord = -settings.computed.stripeSize * 3 + runtime.stripeOffset; barPixelCoord < settings.canvasSize() + settings.computed.stripeSize * 2; barPixelCoord += settings.computed.stripeSize * 2) {
-				if (settings.computed.isMovementHorizontal) {
-					context.fillRect(barPixelCoord + runtime.stripeOffset, 0, settings.computed.stripeSize, canvas.height);
-				} else {
-					context.fillRect(0, barPixelCoord + runtime.stripeOffset, canvas.width, settings.computed.stripeSize);
+				// draw background
+				context.fillStyle = settings.backgroundColor;
+				for (var barPixelCoord = -settings.computed.stripeSize * 3 + runtime.stripeOffsetRounded; barPixelCoord < settings.canvasSize() + settings.computed.stripeSize * 2; barPixelCoord += settings.computed.stripeSize * 2) {
+					if (settings.computed.isMovementHorizontal) {
+						context.fillRect(barPixelCoord + runtime.stripeOffsetRounded, 0, settings.computed.stripeSize, canvas.height);
+					} else {
+						context.fillRect(0, barPixelCoord + runtime.stripeOffsetRounded, canvas.width, settings.computed.stripeSize);
+					}
 				}
+				// resume drawing
+				context.restore();
 			}
 			// move
 			if (settings.computed.isMovementForward) {
-				runtime.stripeOffset += settings.computed.movePixelsPerFrame;
-				if (runtime.stripeOffset >= settings.computed.stripeSize * 2) {
-					runtime.stripeOffset = 0;
+				runtime.stripeOffsetActual += settings.computed.movePixelsPerFrame;
+				if (runtime.stripeOffsetActual >= settings.computed.stripeSize * 2) {
+					runtime.stripeOffsetActual = 0;
 				}
 			} else {
-				runtime.stripeOffset -= settings.computed.movePixelsPerFrame;
-				if (runtime.stripeOffset <= -settings.computed.stripeSize * 2) {
-					runtime.stripeOffset = 0;
+				runtime.stripeOffsetActual -= settings.computed.movePixelsPerFrame;
+				if (runtime.stripeOffsetActual <= -settings.computed.stripeSize * 2) {
+					runtime.stripeOffsetActual = 0;
 				}
 			}
-			// resume drawing
-			context.restore();
+			// update last
+			runtime.lastStripeOffsetRounded = runtime.stripeOffsetRounded;
+			// round
+			runtime.stripeOffsetRounded = Math.round(runtime.stripeOffsetActual * 2) / 2;
 		}
 		// continue to next animation frame if drawing
 		if (runtime.isDrawing) {
