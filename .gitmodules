@@ -10,3 +10,6 @@
 [submodule "lib/ogg-piano-sound"]
 	path = lib/ogg-piano-sound
 	url = https://github.com/pffy/ogg-piano-sound
+[submodule "lib/js-cookie"]
+	path = lib/js-cookie
+	url = https://github.com/js-cookie/js-cookie

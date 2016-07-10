@@ -4,6 +4,7 @@ $(document).ready(function() {
 	// constants
 	var constants = {
 		notes: 14,
+		cookieOptions: { expires: 30 },
 		computed: {}
 	};
 	// defaults
@@ -54,6 +55,16 @@ $(document).ready(function() {
 		var $this = $(this);
 		constants.computed.noteElements[$this.attr('data-note')] = $this[0];
 	});
+	// add cookie support to constants
+	Cookies.set('testCookieSupport', 'yes') // set test cookie
+	if (Cookies.get('testCookieSupport') == 'yes') { // try to read test cookie
+		// if support exists, set on
+		constants.computed.cookieSupport = true;
+		Cookies.remove('testCookieSupport'); // remove test cookie
+	} else {
+		// if support does not exist, set off
+		constants.computed.cookieSupport = false;
+	}
 	
 	// canvas and context
 	var canvas = document.getElementById('app-canvas');
@@ -105,6 +116,8 @@ $(document).ready(function() {
 		settings.frequency = parseFloat($('#settings-frequency').val());
 		settings.stopAfter = parseInt($('#settings-stop-after').val());
 		settings.fullscreen = ($('#settings-fullscreen').val() == 'on');
+		// update saved settings
+		updateSavedSettings();
 		// compute settings
 		computeSettings();
 		// apply settings
@@ -158,10 +171,13 @@ $(document).ready(function() {
 			playNextNote();
 		}
 	});
-	
+
 	// settings reset button
 	$('#settings-reset-button').on('click', function() {
+		// reset defaults
 		resetDefaults();
+		// update saved settings
+		updateSavedSettings();
 	});
 	
 	// app panel
@@ -341,6 +357,11 @@ $(document).ready(function() {
 		}
 	}
 	
+	// restore default settings on load
+	resetDefaults();
+	// attempt to load saved settings if they exist
+	restoreSavedSettings();
+	
 	// helper functions
 
 	// scroll to top smoothly
@@ -360,6 +381,80 @@ $(document).ready(function() {
 		settings.computed.scaleSeconds = (1.0 / settings.frequency);
 	}
 	
+	// update saved settings
+	function updateSavedSettings() {
+		setSavedSetting('mdds.app.settings.movement', $('#settings-movement').val());
+		setSavedSetting('mdds.app.settings.stripes', $('#settings-stripes').val());
+		setSavedSetting('mdds.app.settings.speed', $('#settings-speed').val());
+		setSavedSetting('mdds.app.settings.metronome', $('#settings-metronome').val());
+		setSavedSetting('mdds.app.settings.frequency', $('#settings-frequency').val());
+		setSavedSetting('mdds.app.settings.stopAfter', $('#settings-stop-after').val());
+		setSavedSetting('mdds.app.settings.fullscreen', $('#settings-fullscreen').val());
+		setSavedSetting('mdds.app.settings.stripeColor', $('#settings-color-stripe').spectrum('get').toHexString());
+		setSavedSetting('mdds.app.settings.backgroundColor', $('#settings-color-background').spectrum('get').toHexString());
+	}
+	
+	// restore saved settings
+	function restoreSavedSettings() {
+		if (getSavedSetting('mdds.app.settings.movement')) {
+			$('#settings-movement').val(getSavedSetting('mdds.app.settings.movement'));
+		}
+		if (getSavedSetting('mdds.app.settings.stripes')) {
+			$('#settings-stripes').val(getSavedSetting('mdds.app.settings.stripes'));
+		}
+		if (getSavedSetting('mdds.app.settings.speed')) {
+			$('#settings-speed').val(getSavedSetting('mdds.app.settings.speed'));
+		}
+		if (getSavedSetting('mdds.app.settings.metronome')) {
+			$('#settings-metronome').val(getSavedSetting('mdds.app.settings.metronome'));
+		}
+		if (getSavedSetting('mdds.app.settings.frequency')) {
+			$('#settings-frequency').val(getSavedSetting('mdds.app.settings.frequency'));
+		}
+		if (getSavedSetting('mdds.app.settings.stopAfter')) {
+			$('#settings-stop-after').val(getSavedSetting('mdds.app.settings.stopAfter'));
+		}
+		if (getSavedSetting('mdds.app.settings.fullscreen')) {
+			$('#settings-fullscreen').val(getSavedSetting('mdds.app.settings.fullscreen'));
+		}
+		if (getSavedSetting('mdds.app.settings.stripeColor')) {
+			$('#settings-color-stripe').spectrum({
+				color: getSavedSetting('mdds.app.settings.stripeColor')
+			});
+		}
+		if (getSavedSetting('mdds.app.settings.backgroundColor')) {
+			$('#settings-color-background').spectrum({
+				color: getSavedSetting('mdds.app.settings.backgroundColor')
+			});
+		}
+		// update dependent settings elements
+		updateDependentSettingsElements();
+	}
+	
+	// get saved setting
+	function getSavedSetting(name) {
+		// check if cookies are supported
+		if (constants.computed.cookieSupport) {
+			// if yes, read and return cookie value
+			return Cookies.get(name);
+		} else {
+			// if no, read and return local storage value
+			return localStorage.getItem(name);
+		}
+	}
+
+	// set saved setting
+	function setSavedSetting(name, value) {
+		// check if cookies are supported
+		if (constants.computed.cookieSupport) {
+			// if yes, set cookie value
+			Cookies.set(name, value, constants.cookieOptions);
+		} else {
+			// if no, set local storage value
+			localStorage.setItem(name, value);
+		}
+	}
+	
 	// reset defaults
 	function resetDefaults() {
 		// inputs
@@ -377,7 +472,12 @@ $(document).ready(function() {
 		$('#settings-color-background').spectrum({
 			color: defaults.backgroundColor
 		});
-		// update dependent elements
+		// update dependent settings elements
+		updateDependentSettingsElements();
+	}
+
+	// update dependent settings elements
+	function updateDependentSettingsElements() {
 		$('#settings-metronome').trigger('change');
 		$('#settings-frequency').trigger('blur');
 	}
@@ -478,8 +578,5 @@ $(document).ready(function() {
 				return null;
 		}
 	}
-	
-	// reset defaults on load
-	resetDefaults();
 	
 });
