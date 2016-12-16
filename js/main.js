@@ -68,7 +68,6 @@ $(document).ready(function() {
 	
 	// canvas and context
 	var canvas = document.getElementById('app-canvas');
-	var $canvas = $('#app-canvas');
 	var context = canvas.getContext('2d');
 	
 	// call resize
@@ -200,13 +199,13 @@ $(document).ready(function() {
 		var hasChanged = false;
 		if (canvas.width != windowWidth) {
 			// update width on change
-			$canvas.css('width', windowWidth); // override css
+			canvas.setAttribute('width', parseInt(windowWidth));
 			hasChanged = true;
 		}
 		if (canvas.height != windowHeight) {
 			// update height on change
 			hasChanged = true;
-			$canvas.css('height', windowHeight); // override css
+			canvas.setAttribute('height', parseInt(windowHeight));
 		}
 		// clear computed settings on change
 		if (hasChanged) {
